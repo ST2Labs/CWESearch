@@ -189,9 +189,20 @@ if __name__ == "__main__":
     context = getCWEAttackConsequence(id_cwe)
     wasc_id = getWascID(id_cwe)
 
-    logger.info('ID: %s', id_cwe)
-    logger.info('WASC ID: %s', wasc_id)
-    logger.info('Title: %s', title)
-    logger.info('Description summary: %s', summary)
-    logger.info('Description Extended: %s', extend)
-    logger.info('Attack Consequence: %s', context)
+    logger.info('''
+
+    CWE ID: %s
+    WASC ID: %s
+    Title: %s
+
+    Description summary: %s
+
+    Description Extended: %s
+
+    Attack Consequence: %s ''',
+    id_cwe,
+    wasc_id,
+    title,
+    summary,
+    extend,
+    context)
