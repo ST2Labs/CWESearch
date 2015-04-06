@@ -29,29 +29,33 @@ logging.basicConfig(level=logging.DEBUG,
                     )
 
 
-def findWeaknes(CweId):
+def split_len(seq, length):
+    return [seq[i:i + length] for i in range(0, len(seq), length)]
+
+
+def findWeaknes(Id):
 
     logger = logging.getLogger('findWeaknes')
     try:
-        filepath_ = 'db/cwec_v2.8.xml'
+        filepath_ = '/home/vega/GenPy/w3af/cwec_v2.8.xml'
         tree = ET.ElementTree()
         dom = tree.parse(filepath_)
         w = dom.findall("Weaknesses/Weakness")
         for wi in w:
             id_ = str(wi.attrib['ID'])
-            if str(CweId) in id_:
+            if str(Id) in id_:
                 desc = wi.find('Description/Description_Summary')
                 return desc.text
     except Exception, e:
         logger.debug('%s', e)
 
 
-def findDescription(CweId):
+def getTitle(Id):
 
-    logger = logging.getLogger('findDescription')
+    logger = logging.getLogger('findTitle')
 
     try:
-        filepath_ = 'db/cwec_v2.8.xml'
+        filepath_ = '/home/vega/GenPy/w3af/cwec_v2.8.xml'
         tree = ET.ElementTree()
         dom = tree.parse(filepath_)
         w = dom.findall("Weaknesses/Weakness")
@@ -59,8 +63,41 @@ def findDescription(CweId):
 
         for wi in w:
             id_ = str(wi.attrib['ID'])
-            if str(CweId) in id_:
-                desc = wi.find('Description/Description_Summary')
+            if str(Id) in id_:
+                t = wi.attrib['Name']
+                break
+            else:
+                t = None
+        if t is None:
+            for ci in c:
+                id_ = str(ci.attrib['ID'])
+                if str(Id) in id_:
+                    t = ci.attrib['Name']
+                    break
+        t = ' '.join(t.split('\n'))
+        t = ' '.join(t.split('\t'))
+        t = re.sub('\s+', ' ', t)
+
+        return t
+    except Exception, e:
+        logger.debug('%s', e)
+
+
+def findText(Id, path):
+
+    logger = logging.getLogger('findText')
+
+    try:
+        filepath_ = '/home/vega/GenPy/w3af/cwec_v2.8.xml'
+        tree = ET.ElementTree()
+        dom = tree.parse(filepath_)
+        w = dom.findall("Weaknesses/Weakness")
+        c = dom.findall("Compound_Elements/Compound_Element")
+
+        for wi in w:
+            id_ = str(wi.attrib['ID'])
+            if str(Id) in id_:
+                desc = wi.find(path)
                 t = desc.text
                 break
             else:
@@ -68,18 +105,81 @@ def findDescription(CweId):
         if t is None:
             for ci in c:
                 id_ = str(ci.attrib['ID'])
-                if str(CweId) in id_:
-                    desc = ci.find('Description/Description_Summary')
+                if str(Id) in id_:
+                    desc = ci.find(path)
                     t = desc.text
                     break
         t = ' '.join(t.split('\n'))
         t = ' '.join(t.split('\t'))
-        re.sub('\s+', ' ', t)
-        print repr(t)
+        t = re.sub('\s+', ' ', t)
+
         return t
 
     except Exception, e:
         logger.debug('%s', e)
+
+
+def findMappingId(Id, path, mapping):
+
+    logger = logging.getLogger('findMappingId')
+
+    try:
+        filepath_ = '/home/vega/GenPy/w3af/cwec_v2.8.xml'
+        tree = ET.ElementTree()
+        dom = tree.parse(filepath_)
+        w = dom.findall("Weaknesses/Weakness")
+        c = dom.findall("Compound_Elements/Compound_Element")
+
+        for wi in w:
+            id_ = str(wi.attrib['ID'])
+            if str(Id) in id_:
+                d = wi.findall(path)
+                for di in d:
+                    map_ = di.attrib['Mapped_Taxonomy_Name']
+                    if mapping in map_:
+                        desc = di.find('Mapped_Node_ID')
+                        t = desc.text
+                break
+            else:
+                t = None
+        if t is None:
+            for ci in c:
+                id_ = str(ci.attrib['ID'])
+                if str(Id) in id_:
+                    d = ci.findall(path)
+                    for di in d:
+                        map_ = di.attrib['Mapped_Taxonomy_Name']
+                        if mapping in map_:
+                            desc = di.find('Mapped_Node_ID')
+                            t = desc.text
+                    break
+        t = ' '.join(t.split('\n'))
+        t = ' '.join(t.split('\t'))
+        t = re.sub('\s+', ' ', t)
+        return t
+
+    except Exception, e:
+        logger.debug('%s', e)
+
+
+def getWascID(id):
+    path = 'Taxonomy_Mappings/Taxonomy_Mapping'
+    return findMappingId(id, path, 'WASC')
+
+
+def getCWESummary(id):
+    path = 'Description/Description_Summary'
+    return findText(id, path)
+
+
+def getCWEDescExtend(id):
+    path = 'Description/Extended_Description/Text'
+    return findText(id, path)
+
+
+def getCWEAttackConsequence(id):
+    path = 'Common_Consequences/Common_Consequence/Consequence_Note/Text'
+    return findText(id, path)
 
 
 if __name__ == "__main__":
@@ -89,15 +189,28 @@ if __name__ == "__main__":
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=
         """
-            CWESearch  Engine v0.01
-            XML Parser for CWE DataBase
+            CWESearch  Engine v1.0
         """)
 
     parser.add_argument('cwe',
                             help='CWE ID',
                             metavar='<cwe_id>')
 
-    args = parser.parse_args()
+    cpath = 'Common_Consequences/Common_Consequence/Consequence_Note/Text'
 
-    t = findDescription(args.cwe)
-    logger.info('%s', t)
+    args = parser.parse_args()
+    id_cwe = args.cwe
+    title = getTitle(id_cwe)
+    summary = getCWESummary(id_cwe)
+    extend = getCWEDescExtend(id_cwe)
+    context = getCWEAttackConsequence(id_cwe)
+    wasc_id = getWascID(id_cwe)
+
+    # print map(''.join, zip(*[iter(t)] * 90))
+    # print [t[x:x + 8] for x in range(0, len(t), 90)]
+    logger.info('ID: %s', id_cwe)
+    logger.info('WASC ID: %s', wasc_id)
+    logger.info('Title: %s', title)
+    logger.info('Description summary: %s', summary)
+    logger.info('Description Extended: %s', extend)
+    logger.info('Attack Consequence: %s', context)
