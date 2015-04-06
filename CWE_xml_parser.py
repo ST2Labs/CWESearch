@@ -33,29 +33,12 @@ def split_len(seq, length):
     return [seq[i:i + length] for i in range(0, len(seq), length)]
 
 
-def findWeaknes(Id):
-
-    logger = logging.getLogger('findWeaknes')
-    try:
-        filepath_ = '/home/vega/GenPy/w3af/cwec_v2.8.xml'
-        tree = ET.ElementTree()
-        dom = tree.parse(filepath_)
-        w = dom.findall("Weaknesses/Weakness")
-        for wi in w:
-            id_ = str(wi.attrib['ID'])
-            if str(Id) in id_:
-                desc = wi.find('Description/Description_Summary')
-                return desc.text
-    except Exception, e:
-        logger.debug('%s', e)
-
-
 def getTitle(Id):
 
     logger = logging.getLogger('findTitle')
 
     try:
-        filepath_ = '/home/vega/GenPy/w3af/cwec_v2.8.xml'
+        filepath_ = 'db/cwec_v2.8.xml'
         tree = ET.ElementTree()
         dom = tree.parse(filepath_)
         w = dom.findall("Weaknesses/Weakness")
@@ -88,7 +71,7 @@ def findText(Id, path):
     logger = logging.getLogger('findText')
 
     try:
-        filepath_ = '/home/vega/GenPy/w3af/cwec_v2.8.xml'
+        filepath_ = 'db/cwec_v2.8.xml'
         tree = ET.ElementTree()
         dom = tree.parse(filepath_)
         w = dom.findall("Weaknesses/Weakness")
@@ -124,7 +107,7 @@ def findMappingId(Id, path, mapping):
     logger = logging.getLogger('findMappingId')
 
     try:
-        filepath_ = '/home/vega/GenPy/w3af/cwec_v2.8.xml'
+        filepath_ = 'db/cwec_v2.8.xml'
         tree = ET.ElementTree()
         dom = tree.parse(filepath_)
         w = dom.findall("Weaknesses/Weakness")
@@ -206,8 +189,6 @@ if __name__ == "__main__":
     context = getCWEAttackConsequence(id_cwe)
     wasc_id = getWascID(id_cwe)
 
-    # print map(''.join, zip(*[iter(t)] * 90))
-    # print [t[x:x + 8] for x in range(0, len(t), 90)]
     logger.info('ID: %s', id_cwe)
     logger.info('WASC ID: %s', wasc_id)
     logger.info('Title: %s', title)
