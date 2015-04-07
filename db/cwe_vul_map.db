@@ -1,0 +1,54 @@
+# @ST2Labs
+# @2015
+# Julian J Gonzalez
+#
+# DESCRIPTION
+#	MAPPING VULNERABILITY W3AF WITH CWE STANDARS
+# FORMAT 
+#
+#	W3AF:CWE:CAPEC:WASC
+#
+# SUMMARY FROM CAPEC ONLY,IS DESCRIPTION INTO JSON
+# REST INFORMATION TO JSON GET IT FROM CWE
+#
+# 
+# http://capec.mitre.org/data/archive/capec_v2.6.zip {XML}
+##########################################################
+# wa3f_ID:'title',CWE:ID,CAPEC:ID:<Extra Info>,WASC:ID:'title',
+
+10000:'Blind SQL injection vulnerability',CWE:89,CAPEC:7:'Summary',WASC:19:'SQL Injection',
+10001:'Buffer overflow vulnerability',CWE:120,CAPEC:100:'Summary':WASC:7:'Buffer Overflow',,
+10002:'Multiple CORS misconfigurations':CWE:16,CAPEC:0:'none',WASC:14:'Server Misconfiguration',WASC:15:'Application Misconfiguration',
+10003:'Sensitive and strange CORS methods enabled',CWE:16,CAPEC:0:'none',WASC:14:'Server Misconfiguration',WASC:15:'Application Misconfiguration',
+10004:'Sensitive CORS methods enabled',CWE:16,CAPEC:0:'none',WASC:14:'Server Misconfiguration',WASC:15:'Application Misconfiguration',
+10005:'Uncommon CORS methods enabled',CWE:16,CAPEC:0:'none',WASC:14:'Server Misconfiguration',WASC:15:'Application Misconfiguration',
+10006:'Access-Control-Allow-Origin wildcard',CWE:16,CAPEC:0:'none',WASC:14:'Server Misconfiguration',WASC:15:'Application Misconfiguration',
+10007:'Insecure Access-Control-Allow-Origin with credentials',CWE:16:306,CAPEC:0:'none',WASC:14:'Server Misconfiguration',WASC:15:'Application Misconfiguration',
+10008:'Insecure Access-Control-Allow-Origin',CWE:16,CAPEC:0:'none',WASC:14:'Server Misconfiguration',WASC:15:'Application,
+10009:'Incorrect withCredentials implementation',CWE:,CAPEC:0:'none',WASC:14:'Server Misconfiguration',WASC:15:'Application,
+10010:'CSRF vulnerability',CWE:352,CAPEC:62:'none',WASC:9:'Cross-Site Request Forgery',
+10011:'Insecure DAV configuration',CWE:16,CAPEC:0:'none',WASC:14:'Server Misconfiguration',WASC:15:'Application,
+10012:'DAV incorrect configuration',CWE:16,CAPEC:0:'none',WASC:14:'Server Misconfiguration',WASC:15:'Application,
+10013:'DAV insufficient privileges',CWE:280,CAPEC:0:'none',WASC:17:'Improper Filesystem Permissions',
+10014:'eval() input injection vulnerability',CWE:20,CAPEC:0:'none',WASC:20:'Improper Input Handling',
+10015:'Insecure file upload',CWE:434,CAPEC:0:'none',WASC:0,'none',
+10016:'Format string vulnerability',CWE:134,CAPEC:135:'Summary',WASC:6:'Format String Injection',
+10017:'Insecure Frontpage extensions configuration',
+10018:'Unidentified vulnerability',CWE:0,CAPEC:0:'none',WASC:0:'none',
+10019:'Potential unidentified vulnerability',CWE-20,CAPEC:0:'none',WASC:0:'none',
+10020:'Insecure redirection',CWE:601,CAPEC:194:'Summary',WASC:38;'URL Redirector Abuse',
+10021:'Misconfigured access control',CWE:284,CAPEC:0:'none',WASC:0:'none',
+10022:'LDAP injection vulnerability',CWE:90,CAPEC:136:'Summary',WASC:29:'LDAP Injection',
+10023:'Local file inclusion vulnerability',CWE:22,CAPEC:23:'Summary',WASC:33:'Path Traversal',
+10024:'File read error',CWE:22,CAPEC:23:'Summary',WASC:33:'Path Traversal',
+10025:'MX injection vulnerability',CWE:88,CAPEC:134:'Summary',WASC:30:'Mail Command Injection',
+10026:'OS commanding vulnerability',CWE:78,CAPEC:88:'Summary',WASC:31:'OS Commanding',
+10027:'Phishing vector',CWE:601,CAPEC:194:'Summary',WASC:38;'URL Redirector Abuse',
+10028:'Unsafe preg_replace usage',CWE:624,CAPEC:0:'none',WASC:10:'Denial of Service',
+10029:'ReDoS vulnerability',CWE:400,CAPEC:0:'none',WASC:10:'Denial of Service',
+10030:'Potential ReDoS vulnerability',CWE:400,CAPEC:0:'none',WASC:10:'Denial of Service',
+10031:'Response splitting vulnerability',CWE:113,CAPEC:34:'none',WASC:25;'HTTP Response Splitting',
+10032:'Remote code execution',CWE:98,CAPEC:253:'Summary',WASC:5:'Remote File Inclusion'
+10033:'Remote file inclusion',CWE:98,CAPEC:193:'Summary',WASC:5:'Remote File Inclusion',
+10034:'Potential remote file inclusion',CWE:98,CAPEC:175:'Summary',WASC:5:'Remote File Inclusion'
+10035:'SQL injection',CWE:89,CAPEC:66:'Summary',WASC:19:'SQL Injection'
